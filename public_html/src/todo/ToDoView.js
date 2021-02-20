@@ -26,8 +26,6 @@ export default class ToDoView {
         listElement.onmousedown = function() {
             listsElement.removeChild(listElement)
             listsElement.insertBefore(listElement,listsElement.firstChild)
-
-
             thisController.handleLoadList(newList.id);
         }
     }
@@ -77,6 +75,39 @@ export default class ToDoView {
                                 + " <div class='list-item-control'></div>"
                                 + "</div>";
             itemsListDiv.innerHTML += listItemElement;
+        }
+
+
+
+
+        let tasks=document.getElementById('todo-list-items-div').getElementsByClassName('list-item-card')
+        for(let i=0;i<tasks.length;i++){
+            let task=tasks[i].getElementsByClassName('task-col')[0]
+            
+            task.onmousedown=function(){
+                let newChild=document.createElement('input')
+                newChild.setAttribute('type','text')
+                newChild.setAttribute('class','task-col')
+                newChild.setAttribute('value',task.textContent)
+                tasks[i].replaceChild(newChild,task)
+
+                
+                document.addEventListener('click',function(event){
+                    let isClickInside=newChild.contains(event.target)
+
+                    if(!isClickInside){
+                        task.textContent=newChild.value
+                        tasks[i].replaceChild(task,newChild)
+                    }
+                })
+            }
+             
+            
+           
+                
+                
+                
+            
         }
     }
 
