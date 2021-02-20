@@ -69,3 +69,8 @@
 .todo_button:hover {
     background-color: var(--swatch-contrast);
 }
+
+#todo-lists-list{
+    overflow-y: auto;
+    height: 90%;
+}

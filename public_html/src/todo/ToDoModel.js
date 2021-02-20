@@ -152,16 +152,19 @@ export default class ToDoModel {
      * Finds and then removes the current list.
      */
     removeCurrentList() {
-        let indexOfList = -1;
-        for (let i = 0; (i < this.toDoLists.length) && (indexOfList < 0); i++) {
-            if (this.toDoLists[i].id === this.currentList.id) {
-                indexOfList = i;
+        let r=confirm("Are you sure you want to delete this list?")
+        if(r){
+            let indexOfList = -1;
+            for (let i = 0; (i < this.toDoLists.length) && (indexOfList < 0); i++) {
+                if (this.toDoLists[i].id === this.currentList.id) {
+                    indexOfList = i;
+                }
             }
+            this.toDoLists.splice(indexOfList, 1);
+            this.currentList = null;
+            this.view.clearItemsList();
+            this.view.refreshLists(this.toDoLists);
         }
-        this.toDoLists.splice(indexOfList, 1);
-        this.currentList = null;
-        this.view.clearItemsList();
-        this.view.refreshLists(this.toDoLists);
     }
 
     // WE NEED THE VIEW TO UPDATE WHEN DATA CHANGES.
@@ -176,5 +179,6 @@ export default class ToDoModel {
         if (this.tps.hasTransactionToUndo()) {
             this.tps.undoTransaction();
         }
-    } 
+    }
+
 }
