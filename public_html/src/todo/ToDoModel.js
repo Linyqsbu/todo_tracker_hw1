@@ -128,6 +128,7 @@ export default class ToDoModel {
             let listToLoad = this.toDoLists[listIndex];
             this.currentList = listToLoad;
             this.view.viewList(this.currentList);
+            
         }
     }
 

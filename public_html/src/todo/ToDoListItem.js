@@ -15,8 +15,10 @@ export default class ToDoListItem {
     constructor(initId) {
         this.id = initId;
         this.description = "Unknown";
-        this.dueDate = new Date().toUTCString();
+        this.dueDate = 'No Date';
         this.status = "incomplete";
+        
+        
     }
 
     // GETTER/SETTER METHODS
