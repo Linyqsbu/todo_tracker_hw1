@@ -75,41 +75,112 @@ export default class ToDoView {
                                 + " <div class='list-item-control'></div>"
                                 + "</div>";
             itemsListDiv.innerHTML += listItemElement;
+            
+        }   
+        this.makeEditable(list)
+    }
+
+    /*
+    makeEditable(listItem){
+        let item=document.getElementById('todo-list-item-'+listItem.id)
+        let task=item.getElementsByClassName('task-col')[0]
+        task.onmousedown=function(){
+            let newChild=document.createElement('input')
+            newChild.setAttribute('type','text')
+            newChild.setAttribute('class','task-col')
+            newChild.setAttribute('value',task.textContent)
+            item.replaceChild(newChild,task)
+
+            
+            document.addEventListener('click', function(event){
+                let isClickInside=newChild.contains(event.target)
+
+                if(!isClickInside){
+                    task.textContent=newChild.value
+                    item.replaceChild(task,newChild)
+                    listItem.description=newChild.value
+                }
+            })
         }
+    }
+    */
 
+    
+    makeEditable(list){
+        let tasks=document.getElementById('todo-list-items-div').getElementsByClassName('list-item-card')//the collection of tasks in this list
 
-
-
-        let tasks=document.getElementById('todo-list-items-div').getElementsByClassName('list-item-card')
         for(let i=0;i<tasks.length;i++){
-            let task=tasks[i].getElementsByClassName('task-col')[0]
+
+            let task=tasks[i].getElementsByClassName('task-col')[0] //the description of the task
+            let date=tasks[i].getElementsByClassName('due-date-col')[0] //the date of the task
+            let status=tasks[i].getElementsByClassName('status-col')[0]//the status of the task
             
             task.onmousedown=function(){
-                let newChild=document.createElement('input')
-                newChild.setAttribute('type','text')
-                newChild.setAttribute('class','task-col')
-                newChild.setAttribute('value',task.textContent)
-                tasks[i].replaceChild(newChild,task)
+                let newTaskChild=document.createElement('input')
+                newTaskChild.setAttribute('type','text')
+                newTaskChild.setAttribute('class','editable')
+                newTaskChild.setAttribute('value',task.textContent)
+                tasks[i].replaceChild(newTaskChild,task)
 
                 
-                document.addEventListener('click',function(event){
-                    let isClickInside=newChild.contains(event.target)
+                document.addEventListener('click', function(event){
+                    let isClickInside=newTaskChild.contains(event.target)
 
                     if(!isClickInside){
-                        task.textContent=newChild.value
-                        tasks[i].replaceChild(task,newChild)
+                        task.textContent=newTaskChild.value
+                        tasks[i].replaceChild(task,newTaskChild)
+                        list.items[i].setDescription(task.textContent)
                     }
                 })
             }
-             
-            
-           
+
+
+            date.onmousedown=function(){
+                let newDateChild=document.createElement('input')
+                newDateChild.setAttribute('class','editable')
+                newDateChild.setAttribute('type','date')
+                newDateChild.setAttribute('value',date.textContent)
+                tasks[i].replaceChild(newDateChild,date)
+
+                document.addEventListener('click', function(event){
+                    let isClickInside=newDateChild.contains(event.target)
+
+                    if(!isClickInside){
+                        date.textContent=newDateChild.value
+                        tasks[i].replaceChild(date,newDateChild)
+                        list.items[i].setDueDate(date.textContent)
+                    }
+                })
+            }
+
+
+            status.onmousedown=function(){
+                let newStatusChild=document.createElement('select')
+                let inc=document.createElement('option')//incomplete option
+                newStatusChild.setAttribute('class','editable')
+                inc.value='incomplete'
+                inc.text='incomplete'
+                let com=document.createElement('option')
+                com.value='complete'
+                com.text='complete'
+                newStatusChild.appendChild(inc)
+                newStatusChild.appendChild(com)
+
+                tasks[i].replaceChild(newStatusChild,status)
+                document.addEventListener('click', function(event){
+                    let isClickInside=newStatusChild.contains(event.target)
+
+                    if(!isClickInside){
+                        status.textContent=newStatusChild.value
+                        tasks[i].replaceChild(status,newStatusChild)
+                        list.items[i].setStatus(status.textContent)
+                    }
+                })
                 
-                
-                
-            
+            }
         }
     }
+    
 
     // THE VIEW NEEDS THE CONTROLLER TO PROVIDE PROPER RESPONSES
     setController(initController) {
