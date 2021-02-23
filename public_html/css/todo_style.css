@@ -38,6 +38,7 @@
 #workspace {
     background-color: var(--swatch-primary);
     color: rgb(233,237,240);
+
 }
 
 #title-div {
@@ -64,7 +65,10 @@
 
 .list-item-card {
     border-bottom: solid;
-    
+}
+
+.list-item-card:hover{
+    background-color:lightslategrey;
 }
 
 .todo_button {

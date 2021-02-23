@@ -28,10 +28,15 @@ export default class ToDoView {
 
         
         listElement.onmousedown = function() {
-            listsElement.removeChild(listElement);
+            listsElement.firstChild.style.backgroundColor="#353a44";
             listsElement.insertBefore(listElement,listsElement.firstChild);
+            listsElement.firstChild.style.backgroundColor="blue";
             thisController.handleLoadList(newList.id);
+            thisController.model.tps.clearAllTransactions();
+            
         }
+        
+        
         
         
     }
@@ -82,147 +87,13 @@ export default class ToDoView {
             itemsListDiv.innerHTML += listItemElement;
             
         }   
-        this.makeEditable(list);
-        this.activateButtons(list);
+
+        this.controller.makeEditable(list);
+        this.controller.activateButtons(list);
         
     }
 
-    //ACTIVATE THE CONTROL BUTTONS OF EACH ITEM
-    activateButtons(list){
-        let tempView=this;
-        let items=document.getElementById('todo-list-items-div').childNodes;
-        for(let i=0;i<items.length;i++){
-            items[i].getElementsByClassName("arrow_up")[0].onmousedown=function(){
-                if(i!=0){
-                    let temp=list.items[i];
-                    list.items[i]=list.items[i-1];
-                    list.items[i-1]=temp;
-                }
-            
-                if(items[i].previousSibling){
-                    items[i].parentNode.insertBefore(items[i],items[i].previousSibling);
-                }
-                tempView.viewList(list);
-            }
-
-            items[i].getElementsByClassName("arrow_down")[0].onmousedown=function(){
-                if(i!=list.items.length-1){
-                    let temp=list.items[i+1];
-                    list.items[i+1]=list.items[i];
-                    list.items[i]=temp;
-                }
-
-                if(items[i].nextSibling){
-                    items[i].parentNode.insertBefore(items[i].nextSibling,items[i]);
-                }
-                tempView.viewList(list);
-            }
-
-            items[i].getElementsByClassName("delete-item")[0].onmousedown=function(){
-                let r=confirm("Are you sure that you want to delete item "+list.items[i].description+"?");
-                if(r){
-                    list.items.splice(i,1);
-                    items[i].parentNode.removeChild(items[i]);
-                    tempView.viewList(list);
-                }
-            }
-            
-        }
-        
-    }
-
-    makeEditable(list){
-        let tasks=document.getElementById('todo-list-items-div').getElementsByClassName('list-item-card')//the collection of tasks in this list
-
-        for(let i=0;i<tasks.length;i++){
-
-            let task=tasks[i].getElementsByClassName('task-col')[0]; //the description of the task
-            let date=tasks[i].getElementsByClassName('due-date-col')[0]; //the date of the task
-            let status=tasks[i].getElementsByClassName('status-col')[0];//the status of the task
-            
-            
-            task.onmousedown=function(){
-                let newTaskChild=document.createElement('input');
-                newTaskChild.setAttribute('type','text');
-                newTaskChild.setAttribute('class','editable');
-                newTaskChild.setAttribute('value',task.textContent);
-                tasks[i].replaceChild(newTaskChild,task);
-
-                let editTask=function(event){
-                    let isClickInside=newTaskChild.contains(event.target);
-
-                    if(!isClickInside){
-                        task.textContent=newTaskChild.value;
-                        tasks[i].replaceChild(task,newTaskChild);
-                        list.items[i].setDescription(task.textContent);
-                        document.removeEventListener('click',editTask);
-                    }
-                };
-                
-                document.addEventListener('click',editTask);
-                
-            }
-
-
-            date.onmousedown=function(){
-                let newDateChild=document.createElement('input');
-                newDateChild.setAttribute('class','editable');
-                newDateChild.setAttribute('type','date');
-                newDateChild.setAttribute('value',date.textContent);
-                tasks[i].replaceChild(newDateChild,date);
-
-                let editDate=function(event){
-                    let isClickInside=newDateChild.contains(event.target);
-
-                    if(!isClickInside){
-                        date.textContent=newDateChild.value;
-                        tasks[i].replaceChild(date,newDateChild);
-                        list.items[i].setDueDate(date.textContent);
-                        document.removeEventListener('click',editDate)
-                    }
-                };
-
-                document.addEventListener('click', editDate);
-            }
-
-
-            status.onmousedown=function(){
-                let newStatusChild=document.createElement('select');
-                let op1=document.createElement('option');//incomplete option
-                let op2=document.createElement('option');
-                newStatusChild.appendChild(op1);
-                newStatusChild.appendChild(op2);
-                newStatusChild.setAttribute('class','editable');
-                if(status.textContent=='incomplete'){
-                    op1.text='incomplete';
-                    op1.value='incomplete';
-                    op2.text='complete';
-                    op2.value='complete';
-                }
-                else{
-                    op1.text='complete';
-                    op1.value='complete';
-                    op2.text='incomplete';
-                    op2.value='incomplete';
-                }
-
-                tasks[i].replaceChild(newStatusChild,status);
-
-                let editStatus=function(event){
-                    let isClickInside=newStatusChild.contains(event.target);
-
-                    if(!isClickInside){
-                        status.textContent=newStatusChild.value;
-                        tasks[i].replaceChild(status,newStatusChild);
-                        list.items[i].setStatus(status.textContent);
-                        document.removeEventListener('click',editStatus)
-                    }
-                };
-                document.addEventListener('click', editStatus);
-                
-            }
-        }
-    }
+    
 
     
     

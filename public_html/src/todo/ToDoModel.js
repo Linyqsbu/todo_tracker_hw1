@@ -4,7 +4,10 @@ import ToDoList from './ToDoList.js'
 import ToDoListItem from './ToDoListItem.js'
 import jsTPS from '../common/jsTPS.js'
 import AddNewItem_Transaction from './transactions/AddNewItem_Transaction.js'
-
+import DeleteItem_Transaction from './transactions/DeleteItem_Transaction.js'
+import TaskEdit_Transaction from './transactions/TaskEdit_Transaction.js'
+import DueDateEdit_Transaciton from './transactions/DueDateEdit_Transaction.js'
+import DueDateEdit_Transaction from './transactions/DueDateEdit_Transaction.js'
 /**
  * ToDoModel
  * 
@@ -35,8 +38,9 @@ export default class ToDoModel {
      * 
      * @param {*} itemToAdd A instantiated item to add to the list.
      */
-    addItemToCurrentList(itemToAdd) {
-        this.currentList.push(itemToAdd);
+    addItemToCurrentList(itemToAdd,i) {
+        this.currentList.items.splice(i,0,itemToAdd);
+        this.view.viewList(this.currentList);
     }
 
     /**
@@ -74,6 +78,47 @@ export default class ToDoModel {
     addNewItemTransaction() {
         let transaction = new AddNewItem_Transaction(this);
         this.tps.addTransaction(transaction);
+    }
+
+    /**
+     * deleteItemTransaction
+     * 
+     * Creates a new transaction for deleting an item
+     * @param {*} itemToRemove  the item to be removed
+     * @param {*} i index of the removed item
+     */
+    deleteItemTransaction(itemToRemove,i){
+        let transaction=new DeleteItem_Transaction(this, itemToRemove,i);
+        this.tps.addTransaction(transaction);
+    }
+
+
+    /**
+     * taskEditTransaction 
+     * 
+     * Creates a new transaction for editing the description of an item
+     * @param {} item 
+     * @param {*} oldTask 
+     * @param {*} newTask 
+     */
+    taskEditTransaction(item, oldTask, newTask){
+        let transaction=new TaskEdit_Transaction(this,oldTask,newTask,item);
+        this.tps.addTransaction(transaction);
+    }
+
+    taskEdit(item, newTask){
+        item.setDescription(newTask);
+        this.view.viewList(this.currentList);
+    }
+
+    dueDateEditTransaction(item,oldDate,newDate){
+        let transaction=new DueDateEdit_Transaction(this,oldDate,newDate,item);
+        this.tps.addTransaction(transaction);
+    }
+
+    dueDateEdit(item,date){
+        item.setDueDate(date);
+        this.view.viewList(this.currentList);
     }
 
     /**
@@ -172,6 +217,7 @@ export default class ToDoModel {
     setView(initView) {
         this.view = initView;
     }
+
 
     /**
      * Undo the most recently done transaction if there is one.

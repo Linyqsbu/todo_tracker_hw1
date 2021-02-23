@@ -77,6 +77,11 @@
 .list-item-control {
     width: 33%;
     text-align:center;
+    cursor:pointer;
+}
+
+.list-item-control:hover{
+    background-color:black;
 }
 
 .editable {
