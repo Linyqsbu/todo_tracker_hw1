@@ -30,7 +30,7 @@ export default class ToDoView {
         listElement.onmousedown = function() {
             listsElement.firstChild.style.backgroundColor="#353a44";
             listsElement.insertBefore(listElement,listsElement.firstChild);
-            listsElement.firstChild.style.backgroundColor="blue";
+            listsElement.firstChild.style.backgroundColor="yellow";
             thisController.handleLoadList(newList.id);
             thisController.model.tps.clearAllTransactions();
             

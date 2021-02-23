@@ -45,28 +45,38 @@ export default class ToDoController {
         for(let i=0;i<items.length;i++){
             items[i].getElementsByClassName("arrow_up")[0].onmousedown=function(){
                 if(i!=0){
+                    /*
                     let temp=list.items[i];
                     list.items[i]=list.items[i-1];
                     list.items[i-1]=temp;
+                    */
+                    thisModel.moveItemUpTransaction(i);
                 }
-            
+                
+                /*
                 if(items[i].previousSibling){
                     items[i].parentNode.insertBefore(items[i],items[i].previousSibling);
                 }
                 thisModel.loadList(list.getId());
+                */
             }
 
             items[i].getElementsByClassName("arrow_down")[0].onmousedown=function(){
                 if(i!=list.items.length-1){
+                    /*
                     let temp=list.items[i+1];
                     list.items[i+1]=list.items[i];
                     list.items[i]=temp;
+                    */
+                    thisModel.moveItemDownTransaction(i);
                 }
 
+                /*
                 if(items[i].nextSibling){
                     items[i].parentNode.insertBefore(items[i].nextSibling,items[i]);
                 }
                 thisModel.loadList(list.getId());
+                */
             }
 
             items[i].getElementsByClassName("delete-item")[0].onmousedown=function(){
@@ -149,6 +159,7 @@ export default class ToDoController {
 
 
             status.onmousedown=function(){
+                let oldStat=status.textContent;
                 let newStatusChild=document.createElement('select');
                 let op1=document.createElement('option');//incomplete option
                 let op2=document.createElement('option');
@@ -174,9 +185,13 @@ export default class ToDoController {
                     let isClickInside=newStatusChild.contains(event.target);
 
                     if(!isClickInside){
+                        /*
                         status.textContent=newStatusChild.value;
                         tasks[i].replaceChild(status,newStatusChild);
                         list.items[i].setStatus(status.textContent);
+                        */
+                        let newStat=newStatusChild.value;
+                        appModel.statusEditTransaction(list.items[i],oldStat,newStat);
                         document.removeEventListener('click',editStatus)
                     }
                 };

@@ -8,6 +8,10 @@ import DeleteItem_Transaction from './transactions/DeleteItem_Transaction.js'
 import TaskEdit_Transaction from './transactions/TaskEdit_Transaction.js'
 import DueDateEdit_Transaciton from './transactions/DueDateEdit_Transaction.js'
 import DueDateEdit_Transaction from './transactions/DueDateEdit_Transaction.js'
+import StatusEdit_Transaction from './transactions/StatusEdit_Transaction.js'
+import MovingItemUp_Transaction from './transactions/MovingItemUp_Transaction.js'
+import MovingItemDown_Transaction from './transactions/MovingItemDown_Transaction.js'
+
 /**
  * ToDoModel
  * 
@@ -120,6 +124,42 @@ export default class ToDoModel {
         item.setDueDate(date);
         this.view.viewList(this.currentList);
     }
+
+    statusEditTransaction(item,oldStat,newStat){
+        let transaction=new StatusEdit_Transaction(this,oldStat,newStat,item);
+        this.tps.addTransaction(transaction);
+    }
+
+    statusEdit(item,status){
+        item.setStatus(status);
+        this.view.viewList(this.currentList);
+    }
+
+    moveItemUpTransaction(i){
+        let transaction=new MovingItemUp_Transaction(this,i);
+        this.tps.addTransaction(transaction);
+    }
+
+    moveItemUp(i){
+        let temp=this.currentList.items[i];
+        this.currentList.items[i]=this.currentList.items[i-1];
+        this.currentList.items[i-1]=temp;
+        this.view.viewList(this.currentList);
+    }
+
+
+    moveItemDownTransaction(i){
+        let transaction=new MovingItemDown_Transaction(this,i);
+        this.tps.addTransaction(transaction);
+    }
+
+    moveItemDown(i){
+        let temp=this.currentList.items[i+1];
+        this.currentList.items[i+1]=this.currentList.items[i];
+        this.currentList.items[i]=temp;
+        this.view.viewList(this.currentList);
+    }
+
 
     /**
      * addNewList
