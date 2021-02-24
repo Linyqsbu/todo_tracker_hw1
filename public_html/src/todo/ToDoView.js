@@ -25,12 +25,34 @@ export default class ToDoView {
         let thisController = this.controller;
         let view=this;
         
+        let timer
         listElement.onmousedown = function() {
-            thisController.handleLoadList(newList.id);
-            listsElement.firstChild.style.backgroundColor="rgb(255,200,25)";
-            listsElement.firstChild.style.color="black";
-            thisController.model.tps.clearAllTransactions();
-            view.refreshUndoRedo(false,false);
+            if(timer){
+                clearTimeout(timer);
+            }
+            timer=setTimeout(()=>{
+                thisController.handleLoadList(newList.id);
+                listsElement.firstChild.style.backgroundColor="rgb(255,200,25)";
+                listsElement.firstChild.style.color="black";
+                thisController.model.tps.clearAllTransactions();
+                view.refreshUndoRedo(false,false);
+            }, 200);
+        }
+        
+        listElement.ondblclick=function(){
+            clearTimeout(timer);
+            
+            let input=document.createElement("input");
+            input.setAttribute("value",listElement.textContent);
+            input.setAttribute("type","text");
+            listsElement.replaceChild(input, listElement);
+
+            input.onblur=function(){
+                newList.name=input.value;
+                listElement.textContent=input.value;
+                listsElement.replaceChild(listElement,input);
+            }
+            
         }
     }
 

@@ -105,8 +105,13 @@ export default class ToDoController {
             newTaskChild.setAttribute('class','editable');
             newTaskChild.setAttribute('value',oldTask);
             newTaskChild.onblur=function(){
-                let newTask=newTaskChild.value;
-                appModel.taskEditTransaction(list.items[i],oldTask,newTask);
+                if(oldTask!=newTaskChild.value){
+                    let newTask=newTaskChild.value;
+                    appModel.taskEditTransaction(list.items[i],oldTask,newTask);
+                }
+
+                else
+                    appModel.loadList(list.id);
             }
         }
     }
@@ -123,8 +128,13 @@ export default class ToDoController {
             
 
             newDateChild.onblur=function(){
-                let newDate=newDateChild.value;
-                appModel.dueDateEditTransaction(list.items[i],oldDate,newDate);
+                if(oldDate!=newDateChild.value){
+                    let newDate=newDateChild.value;
+                    appModel.dueDateEditTransaction(list.items[i],oldDate,newDate);
+                }
+
+                else
+                    appModel.loadList(list.id);
             }
                 
         }
@@ -156,8 +166,13 @@ export default class ToDoController {
             status.parentNode.replaceChild(newStatusChild,status);
 
             newStatusChild.onblur=function(){
-                let newStat=newStatusChild.value;
-                appModel.statusEditTransaction(list.items[i],oldStat,newStat);
+                if(oldStat!=newStatusChild.value){
+                    let newStat=newStatusChild.value;
+                    appModel.statusEditTransaction(list.items[i],oldStat,newStat);
+                }
+
+                else
+                    appModel.loadList(list.id);
             }
  
             

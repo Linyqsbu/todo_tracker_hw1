@@ -14,8 +14,9 @@ export default class ToDoList {
     constructor(initId) {
         this.id = initId;
 
-        this.name = "Unnknown";
 
+        this.name = "Unnknown";
+        
         this.items = [];
     }   
     
@@ -79,5 +80,14 @@ export default class ToDoList {
      */
     getItemAtIndex(index) {
         return this.items[index];
+    }
+
+    
+    /**
+     * Set the name of this list
+     * @param {} newName the name to be set
+     */
+    setName(newName){
+        this.name=newName;
     }
 }

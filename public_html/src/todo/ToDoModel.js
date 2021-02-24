@@ -238,7 +238,7 @@ export default class ToDoModel {
             this.currentList = listToLoad;
             this.toDoLists[listIndex]=this.toDoLists[0];
             this.toDoLists[0]=listToLoad;
-            this.view.refreshLists(this.toDoLists, false);
+            this.view.refreshLists(this.toDoLists);
             this.view.viewList(this.currentList);
             
         }
