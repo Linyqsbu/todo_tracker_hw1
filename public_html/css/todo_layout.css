@@ -50,9 +50,6 @@
     position:relative;
 }
 
-#left-sidebar-header-text {
-    
-}
 
 #left-sidebar-controls {
     text-align: right;
@@ -72,6 +69,9 @@
 #todo-list-items-div{
     display: flex;
     flex-direction: column;
+    max-height:99%;
+    overflow-y:auto;
+    overflow-x:hidden
 }
 
 #todo-list-header-card{
@@ -81,12 +81,9 @@
     width:100%;
 }
 
-#todo-list-header-card .todo_button{
-    padding-left:0.5%;
-}
+
 
 .list-item-card {
-    height: fit-content;
     display: flex;
     flex-direction: row;
 }
@@ -95,18 +92,21 @@
     width:25%;
     text-align:left;
     height:100%;
+    padding-left:5px;
 }
 
 .due-date-col {
     width:25%;
     text-align:left;
     height:100%;
+    padding-left:5px;
 }
 
 .status-col {
     width:25%;
     text-align:left;
     height:100%;
+    padding-left:5px;
 }
 
 .list-controls-col {
@@ -130,14 +130,9 @@
 }
 
 .editable {
+    height:23px;
     width:25%;
     background-color:var(--deep-blue-lighter);
-    border-top:none;
-    border-left:none;
-    border-right:none;
-    border-bottom:1px solid;
-    margin:0;
-    padding:0;
     font-family:'Consolas';
     font-size: 16px;
     color:var(--light-gray);
@@ -184,4 +179,17 @@
 }
 
 #todo-lists-list .todo_button{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+#todo-list-items-div .list-item-card{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+
+.deactivated-button{
+    width: 33%;
+    text-align:center;
 }

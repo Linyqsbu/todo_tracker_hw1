@@ -23,14 +23,14 @@ export default class ToDoView {
 
         // SETUP THE HANDLER FOR WHEN SOMEONE MOUSE CLICKS ON OUR LIST
         let thisController = this.controller;
-  
+        let view=this;
+        
         listElement.onmousedown = function() {
-            //listsElement.insertBefore(listElement,listsElement.firstChild);
             thisController.handleLoadList(newList.id);
             listsElement.firstChild.style.backgroundColor="rgb(255,200,25)";
             listsElement.firstChild.style.color="black";
             thisController.model.tps.clearAllTransactions();
-            
+            view.refreshUndoRedo(false,false);
         }
     }
 
@@ -88,16 +88,68 @@ export default class ToDoView {
                 currentItem.getElementsByClassName('status-col')[0].style.color="#f5bc75";
             }
 
+            if(i==0){
+                let arrow_up=document.getElementById("todo-list-item-"+listItem.id).getElementsByClassName("arrow_up")[0];
+                arrow_up.classList.replace('list-item-control','deactivated-button');
+            }
+
+            if(i==list.items.length-1){
+                let arrow_down=document.getElementById("todo-list-item-"+listItem.id).getElementsByClassName("arrow_down")[0];
+                arrow_down.classList.replace('list-item-control','deactivated-button');
+            }
         }
+
+        let header=document.getElementById('todo-list-header-card');
+        let buttons=header.getElementsByClassName('deactivated-button')
+        this.activateListControl(buttons);
 
         this.controller.makeEditable(list);
         this.controller.activateButtons(list);
         
     }
 
-    
+    activateListControl(buttons){
+        while(buttons.length!=0){
+            buttons[0].classList.add('list-item-control');
+            buttons[0].classList.add('todo_button');
+            buttons[0].classList.remove('deactivated-button');
+        }
+    }
 
-    
+    deactivateListControl(buttons){
+        while(buttons.length!=0){
+            buttons[0].classList.add('deactivated-button');
+            buttons[0].classList.remove('todo_button');
+            buttons[0].classList.remove('list-item-control');
+        }
+    }
+
+    refreshUndoRedo(isUndo,isRedo){
+        let undo=document.getElementById('undo-button');
+        let redo=document.getElementById('redo-button');
+        undo.className="";
+        redo.className="";
+        if(isUndo){
+            undo.classList.add("material-icons");
+            undo.classList.add("todo_button");
+        }
+
+        else{
+            undo.classList.add("material-icons");
+            undo.classList.add("deactivated-button");
+        }
+
+        if(isRedo){
+            redo.classList.add("material-icons");
+            redo.classList.add("todo_button");
+        }
+
+        else{
+            redo.classList.add("material-icons");
+            redo.classList.add("deactivated-button");
+        }
+    }
+
     
     // THE VIEW NEEDS THE CONTROLLER TO PROVIDE PROPER RESPONSES
     setController(initController) {

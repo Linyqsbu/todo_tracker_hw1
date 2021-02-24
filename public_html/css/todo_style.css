@@ -82,7 +82,7 @@ body{
 
 }
 
-.list-item-card:hover{
+#todo-list-items-div .list-item-card:hover{
     background-color:lightslategrey;
 }
 
@@ -93,14 +93,16 @@ body{
     font-weight:bold;
 }
 
+.deactivated-button{
+    background-color: var(--swatch-complement);
+    color:gray;
+    text-align:center;
+    font-weight:bold;
+}
+
 .todo_button:hover{
     background-color:var(--swatch-contrast);
 }
-
-
-
-
-
 
 
 #todo-list-header-card{
@@ -134,3 +136,4 @@ body{
     bottom:0;
     
 }
+

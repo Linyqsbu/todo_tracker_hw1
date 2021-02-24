@@ -80,8 +80,11 @@ export default class ToDoModel {
      * Creates a new transaction for adding an item and adds it to the transaction stack.
      */
     addNewItemTransaction() {
-        let transaction = new AddNewItem_Transaction(this);
-        this.tps.addTransaction(transaction);
+        if(this.currentList!=null){
+            let transaction = new AddNewItem_Transaction(this);
+            this.tps.addTransaction(transaction);
+            this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
+        }
     }
 
     /**
@@ -94,6 +97,7 @@ export default class ToDoModel {
     deleteItemTransaction(itemToRemove,i){
         let transaction=new DeleteItem_Transaction(this, itemToRemove,i);
         this.tps.addTransaction(transaction);
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }
 
 
@@ -108,6 +112,7 @@ export default class ToDoModel {
     taskEditTransaction(item, oldTask, newTask){
         let transaction=new TaskEdit_Transaction(this,oldTask,newTask,item);
         this.tps.addTransaction(transaction);
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }
 
     taskEdit(item, newTask){
@@ -118,6 +123,7 @@ export default class ToDoModel {
     dueDateEditTransaction(item,oldDate,newDate){
         let transaction=new DueDateEdit_Transaction(this,oldDate,newDate,item);
         this.tps.addTransaction(transaction);
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }
 
     dueDateEdit(item,date){
@@ -128,6 +134,7 @@ export default class ToDoModel {
     statusEditTransaction(item,oldStat,newStat){
         let transaction=new StatusEdit_Transaction(this,oldStat,newStat,item);
         this.tps.addTransaction(transaction);
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }
 
     statusEdit(item,status){
@@ -138,6 +145,7 @@ export default class ToDoModel {
     moveItemUpTransaction(i){
         let transaction=new MovingItemUp_Transaction(this,i);
         this.tps.addTransaction(transaction);
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }
 
     moveItemUp(i){
@@ -151,6 +159,7 @@ export default class ToDoModel {
     moveItemDownTransaction(i){
         let transaction=new MovingItemDown_Transaction(this,i);
         this.tps.addTransaction(transaction);
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }
 
     moveItemDown(i){
@@ -158,6 +167,21 @@ export default class ToDoModel {
         this.currentList.items[i+1]=this.currentList.items[i];
         this.currentList.items[i]=temp;
         this.view.viewList(this.currentList);
+    }
+
+    closeList(){
+        this.view.refreshLists(this.toDoLists);
+        this.currentList=null;
+        this.view.clearItemsList();
+        this.tps.clearAllTransactions();
+        let header=document.getElementById('todo-list-header-card');
+        let buttons=header.getElementsByClassName('list-item-control');
+        this.view.deactivateListControl(buttons);
+        this.view.refreshUndoRedo(false,false);
+    }
+
+    listNameEdit(newName){
+        this.currentList.setname(newName);
     }
 
 
@@ -214,7 +238,7 @@ export default class ToDoModel {
             this.currentList = listToLoad;
             this.toDoLists[listIndex]=this.toDoLists[0];
             this.toDoLists[0]=listToLoad;
-            this.view.refreshLists(this.toDoLists);
+            this.view.refreshLists(this.toDoLists, false);
             this.view.viewList(this.currentList);
             
         }
@@ -227,6 +251,7 @@ export default class ToDoModel {
         if (this.tps.hasTransactionToRedo()) {
             this.tps.doTransaction();
         }
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }   
 
     /**
@@ -241,18 +266,20 @@ export default class ToDoModel {
      * Finds and then removes the current list.
      */
     removeCurrentList() {
-        let r=confirm("Are you sure you want to delete this list?")
-        if(r){
-            let indexOfList = -1;
-            for (let i = 0; (i < this.toDoLists.length) && (indexOfList < 0); i++) {
-                if (this.toDoLists[i].id === this.currentList.id) {
-                    indexOfList = i;
+        if(this.currentList!=null){
+            let r=confirm("Are you sure you want to delete this list?")
+            if(r){
+                let indexOfList = -1;
+                for (let i = 0; (i < this.toDoLists.length) && (indexOfList < 0); i++) {
+                    if (this.toDoLists[i].id === this.currentList.id) {
+                        indexOfList = i;
+                    }
                 }
+                this.toDoLists.splice(indexOfList, 1);
+                this.currentList = null;
+                this.view.clearItemsList();
+                this.view.refreshLists(this.toDoLists);
             }
-            this.toDoLists.splice(indexOfList, 1);
-            this.currentList = null;
-            this.view.clearItemsList();
-            this.view.refreshLists(this.toDoLists);
         }
     }
 
@@ -269,6 +296,8 @@ export default class ToDoModel {
         if (this.tps.hasTransactionToUndo()) {
             this.tps.undoTransaction();
         }
+
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
     }
 
 }
