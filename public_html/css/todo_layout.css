@@ -2,26 +2,52 @@
     position:absolute;
     width:100%;
     height:100%;
+    
+    /*
     display: grid;
     padding: 1px;
     grid-template-rows: 5% 95%;
     grid-template-columns: 12% 88%;
+    */
     font-family: 'Consolas';
 }
 
 #navbar {
+    /*
     grid-column: 1 / span 2;
     grid-row: 1 / span 1;
+    */
+    height:5%;
+    margin:5px;
+}
+
+#container-secondary{
+    height:95%;
+    margin:5px;
+    display:flex;
+    flex-direction:row;
 }
 
 #left-sidebar {
+    /*
     grid-column: 1 / span 1;
-    grid-row: 2 / span 1;
+    grid-row: 2 / span 1
+    */
+    width:12%;
+    height:100%;
+    border-right-color:white;
+    border-right:solid;
 }
 
 #left-sidebar-header {
+    /*
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 60% 40%;s
+    */
+    height:30px;
+    margin:0;
+    padding:0;
+    position:relative;
 }
 
 #left-sidebar-header-text {
@@ -33,15 +59,30 @@
 }
 
 #workspace {
-    grid-column: 2 span 1;
-    grid-row: 2 span 1;
+    /*
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1;
+    */
     display: flex;
     flex-direction: column;
+    height:100%;
+    width:88%;
 }
 
 #todo-list-items-div{
     display: flex;
     flex-direction: column;
+}
+
+#todo-list-header-card{
+    height:30px;
+    position:relative;
+    color:white;
+    width:100%;
+}
+
+#todo-list-header-card .todo_button{
+    padding-left:0.5%;
 }
 
 .list-item-card {
@@ -53,16 +94,19 @@
 .task-col {
     width:25%;
     text-align:left;
+    height:100%;
 }
 
 .due-date-col {
     width:25%;
     text-align:left;
+    height:100%;
 }
 
 .status-col {
     width:25%;
     text-align:left;
+    height:100%;
 }
 
 .list-controls-col {
@@ -72,6 +116,7 @@
     bottom:0px;
     right:0px;
     position:absolute;
+    height:100%;
 }
 
 .list-item-control {
@@ -129,4 +174,14 @@
     display: flex;
     flex-direction: row;
 
+}
+
+#todo-lists-list{
+    max-height:95%;
+    overflow-y: auto;
+    
+
+}
+
+#todo-lists-list .todo_button{
 }

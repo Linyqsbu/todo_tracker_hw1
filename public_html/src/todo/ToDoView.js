@@ -23,22 +23,15 @@ export default class ToDoView {
 
         // SETUP THE HANDLER FOR WHEN SOMEONE MOUSE CLICKS ON OUR LIST
         let thisController = this.controller;
-
-        
-
-        
+  
         listElement.onmousedown = function() {
-            listsElement.firstChild.style.backgroundColor="#353a44";
-            listsElement.insertBefore(listElement,listsElement.firstChild);
-            listsElement.firstChild.style.backgroundColor="yellow";
+            //listsElement.insertBefore(listElement,listsElement.firstChild);
             thisController.handleLoadList(newList.id);
+            listsElement.firstChild.style.backgroundColor="rgb(255,200,25)";
+            listsElement.firstChild.style.color="black";
             thisController.model.tps.clearAllTransactions();
             
         }
-        
-        
-        
-        
     }
 
     // REMOVES ALL THE LISTS FROM THE LEFT SIDEBAR
@@ -86,7 +79,16 @@ export default class ToDoView {
                                 + "</div>";
             itemsListDiv.innerHTML += listItemElement;
             
-        }   
+            let currentItem=document.getElementById('todo-list-item-'+listItem.id);
+            if(listItem.status=="complete"){
+                currentItem.getElementsByClassName('status-col')[0].style.color="#8ed4f8";
+            }
+
+            else{
+                currentItem.getElementsByClassName('status-col')[0].style.color="#f5bc75";
+            }
+
+        }
 
         this.controller.makeEditable(list);
         this.controller.activateButtons(list);
