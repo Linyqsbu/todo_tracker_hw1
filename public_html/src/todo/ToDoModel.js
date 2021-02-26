@@ -266,21 +266,43 @@ export default class ToDoModel {
      * Finds and then removes the current list.
      */
     removeCurrentList() {
-        if(this.currentList!=null){
-            let r=confirm("Are you sure you want to delete this list?")
-            if(r){
-                let indexOfList = -1;
-                for (let i = 0; (i < this.toDoLists.length) && (indexOfList < 0); i++) {
-                    if (this.toDoLists[i].id === this.currentList.id) {
-                        indexOfList = i;
-                    }
+        //if(this.currentList!=null){
+            //let r=confirm("Are you sure you want to delete this list?")
+            //if(r){
+        let thisModel=this;
+        let modal=document.createElement("div");
+        document.getElementById('grid-container').appendChild(modal);
+        modal.setAttribute("class","modal");
+        modal.innerHTML="<div class='container'>"+
+                            "<h1>Delete List</h1>"+
+                            "<p>Are you sure you want to delete this list?</p>"+
+                                "<button type='button' id='listCancel' class='cancelbtn'>Cancel</button>"+
+                                "<button type='button' id='listDelete' class='deletebtn'>Delete</button>"+
+                        "</div>";
+
+        let deleteButton=document.getElementById("listDelete");
+        let cancelButton=document.getElementById("listCancel");
+
+        deleteButton.onmousedown =function(){
+            let indexOfList = -1;
+            for (let i = 0; (i < thisModel.toDoLists.length) && (indexOfList < 0); i++) {
+                if (thisModel.toDoLists[i].id === thisModel.currentList.id) {
+                    indexOfList = i;
                 }
-                this.toDoLists.splice(indexOfList, 1);
-                this.currentList = null;
-                this.view.clearItemsList();
-                this.view.refreshLists(this.toDoLists);
             }
+            thisModel.toDoLists.splice(indexOfList, 1);
+            thisModel.currentList = null;
+            thisModel.view.clearItemsList();
+            thisModel.view.refreshLists(thisModel.toDoLists);
+            document.getElementById('grid-container').removeChild(modal);
         }
+
+        cancelButton.onmousedown=function(){
+            document.getElementById('grid-container').removeChild(modal);
+        }
+
+        
+        
     }
 
     // WE NEED THE VIEW TO UPDATE WHEN DATA CHANGES.

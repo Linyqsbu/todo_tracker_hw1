@@ -83,12 +83,9 @@ export default class ToDoController {
             }
 
             items[i].getElementsByClassName("delete-item")[0].onmousedown=function(){
-                let r=confirm("Are you sure that you want to delete item "+list.items[i].description+"?");
-                if(r){
-                    thisModel.deleteItemTransaction(list.items[i],i)
+                thisModel.deleteItemTransaction(list.items[i],i)
                     //items[i].parentNode.removeChild(items[i]);
                     //thisModel.loadList(list.getId());
-                }
             }
             
         }
@@ -174,8 +171,6 @@ export default class ToDoController {
                 else
                     appModel.loadList(list.id);
             }
- 
-            
         }
     }
     
