@@ -48,9 +48,15 @@ export default class ToDoView {
             listsElement.replaceChild(input, listElement);
 
             input.onblur=function(){
-                newList.name=input.value;
-                listElement.textContent=input.value;
-                listsElement.replaceChild(listElement,input);
+                if(listElement.textContent!=input.value){
+                    thisController.model.listNameEditTransaction(listElement.textContent, input.value, newList.id);
+                    //newList.name=input.value;
+                    //listElement.textContent=input.value;
+                    //listsElement.replaceChild(listElement,input);
+                }
+                else{
+                    listsElement.replaceChild(listElement,input);
+                }
             }
             
         }

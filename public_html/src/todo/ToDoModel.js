@@ -11,6 +11,7 @@ import DueDateEdit_Transaction from './transactions/DueDateEdit_Transaction.js'
 import StatusEdit_Transaction from './transactions/StatusEdit_Transaction.js'
 import MovingItemUp_Transaction from './transactions/MovingItemUp_Transaction.js'
 import MovingItemDown_Transaction from './transactions/MovingItemDown_Transaction.js'
+import ListNameEdit_Transaction from './transactions/ListNameEdit_Transaction.js'
 
 /**
  * ToDoModel
@@ -180,8 +181,24 @@ export default class ToDoModel {
         this.view.refreshUndoRedo(false,false);
     }
 
-    listNameEdit(newName){
-        this.currentList.setname(newName);
+    listNameEditTransaction(oldName, newName, listId){
+        let transaction=new ListNameEdit_Transaction(this,oldName, newName,listId);
+        this.tps.addTransaction(transaction);
+        this.view.refreshUndoRedo(this.tps.hasTransactionToUndo(),this.tps.hasTransactionToRedo())
+    }
+
+    listNameEdit(newName, listId){
+        let listIndex=-1;
+        for(let i=0;i<this.toDoLists.length;i++){
+            if(this.toDoLists[i].id==listId){
+                listIndex=i;
+            }
+        }
+
+        if(listIndex>=0){
+            this.toDoLists[listIndex].setName(newName);
+        }
+        this.view.refreshLists(this.toDoLists);
     }
 
 
@@ -273,7 +290,7 @@ export default class ToDoModel {
         let modal=document.createElement("div");
         document.getElementById('grid-container').appendChild(modal);
         modal.setAttribute("class","modal");
-        modal.innerHTML="<div class='container'>"+
+        modal.innerHTML="<div class='modal-container'>"+
                             "<h1>Delete List</h1>"+
                             "<p>Are you sure you want to delete this list?</p>"+
                                 "<button type='button' id='listCancel' class='cancelbtn'>Cancel</button>"+

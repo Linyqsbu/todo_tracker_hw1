@@ -139,16 +139,17 @@ body{
 
 .cancelbtn{
     background-color:#ccc;
-    color:black;
+    color:black
+    
 }
 
 .deletebtn{
-    background-color:#f44336;
+    background-color:#f44336;  
 }
 
 
 
-  .modal{
-      background-color:white;
-  }
+.modal{
+      background-color:rgba(0,0,0,0.4);
+}
 
