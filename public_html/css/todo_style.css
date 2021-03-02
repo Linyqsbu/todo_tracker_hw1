@@ -94,10 +94,13 @@ body{
 }
 
 .deactivated-button{
-    background-color: var(--swatch-complement);
+    
     color:gray;
     text-align:center;
     font-weight:bold;
+}
+#todo-list-header-card .deactivated-button{
+    background-color: var(--swatch-complement);
 }
 
 .todo_button:hover{

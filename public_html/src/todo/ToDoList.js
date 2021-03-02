@@ -15,7 +15,7 @@ export default class ToDoList {
         this.id = initId;
 
 
-        this.name = "Unnknown";
+        this.name = "Unknown";
         
         this.items = [];
     }   

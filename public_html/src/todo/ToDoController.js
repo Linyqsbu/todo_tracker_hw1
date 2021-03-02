@@ -97,10 +97,11 @@ export default class ToDoController {
         task.onmousedown=function(){
             let newTaskChild=document.createElement('input');
             let oldTask=task.textContent;
-            task.parentNode.replaceChild(newTaskChild,task);
             newTaskChild.setAttribute('type','text');
             newTaskChild.setAttribute('class','editable');
             newTaskChild.setAttribute('value',oldTask);
+            task.parentNode.replaceChild(newTaskChild,task);
+            newTaskChild.autofocus=true;
             newTaskChild.onblur=function(){
                 if(oldTask!=newTaskChild.value){
                     let newTask=newTaskChild.value;
@@ -108,7 +109,7 @@ export default class ToDoController {
                 }
 
                 else
-                    appModel.loadList(list.id);
+                    appModel.view.viewList(list);
             }
         }
     }
@@ -118,11 +119,10 @@ export default class ToDoController {
         date.onmousedown=function(){
             let oldDate=date.textContent;
             let newDateChild=document.createElement('input');
-            date.parentNode.replaceChild(newDateChild, date);
             newDateChild.setAttribute('class','editable');
             newDateChild.setAttribute('type','date');
             newDateChild.setAttribute('value',oldDate);
-            
+            date.parentNode.replaceChild(newDateChild, date);
 
             newDateChild.onblur=function(){
                 if(oldDate!=newDateChild.value){
@@ -131,7 +131,7 @@ export default class ToDoController {
                 }
 
                 else
-                    appModel.loadList(list.id);
+                    appModel.view.viewList(list);
             }
                 
         }
@@ -161,7 +161,6 @@ export default class ToDoController {
             }
 
             status.parentNode.replaceChild(newStatusChild,status);
-
             newStatusChild.onblur=function(){
                 if(oldStat!=newStatusChild.value){
                     let newStat=newStatusChild.value;
@@ -169,7 +168,7 @@ export default class ToDoController {
                 }
 
                 else
-                    appModel.loadList(list.id);
+                    appModel.view.viewList(list);
             }
         }
     }

@@ -34,6 +34,9 @@ export default class ToDoModel {
 
         // WE'LL USE THIS TO ASSIGN ID NUMBERS TO EVERY LIST ITEM
         this.nextListItemId = 0;
+
+        this.isListClosed=true;
+
     }
 
     /**
@@ -179,6 +182,9 @@ export default class ToDoModel {
         let buttons=header.getElementsByClassName('list-item-control');
         this.view.deactivateListControl(buttons);
         this.view.refreshUndoRedo(false,false);
+        let addList=document.getElementById('add-list-button');
+        this.view.activateAddList(addList);
+        this.isListClosed=true;
     }
 
     listNameEditTransaction(oldName, newName, listId){
@@ -211,12 +217,14 @@ export default class ToDoModel {
      * @param {*} initName The name of this to add.
      */
     addNewList(initName) {
-        let newList = new ToDoList(this.nextListId++);
-        if (initName)
-            newList.setName(initName);
-        this.toDoLists.push(newList);
-        this.view.appendNewListToView(newList);
-        return newList;
+        if(this.isListClosed){
+            let newList = new ToDoList(this.nextListId++);
+            if (initName)
+                newList.setName(initName);
+            this.toDoLists.push(newList);
+            this.view.appendNewListToView(newList);
+            return newList;
+        }
     }
 
     /**
@@ -257,7 +265,6 @@ export default class ToDoModel {
             this.toDoLists[0]=listToLoad;
             this.view.refreshLists(this.toDoLists);
             this.view.viewList(this.currentList);
-            
         }
     }
 

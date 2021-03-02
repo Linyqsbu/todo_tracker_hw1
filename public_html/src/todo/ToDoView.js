@@ -36,6 +36,9 @@ export default class ToDoView {
                 listsElement.firstChild.style.color="black";
                 thisController.model.tps.clearAllTransactions();
                 view.refreshUndoRedo(false,false);
+                let addList=document.getElementById('add-list-button');
+                view.deactivateAddList(addList);
+                thisController.model.isListClosed=false;
             }, 200);
         }
         
@@ -46,7 +49,7 @@ export default class ToDoView {
             input.setAttribute("value",listElement.textContent);
             input.setAttribute("type","text");
             listsElement.replaceChild(input, listElement);
-
+            input.focus();
             input.onblur=function(){
                 if(listElement.textContent!=input.value){
                     thisController.model.listNameEditTransaction(listElement.textContent, input.value, newList.id);
@@ -150,6 +153,16 @@ export default class ToDoView {
             buttons[0].classList.remove('todo_button');
             buttons[0].classList.remove('list-item-control');
         }
+    }
+
+    deactivateAddList(button){
+        button.classList.add('deactivated-button');
+        button.classList.remove('todo_button');
+    }
+
+    activateAddList(button){
+        button.classList.add('todo_button');
+        button.classList.remove('deactivated-button');
     }
 
     refreshUndoRedo(isUndo,isRedo){
