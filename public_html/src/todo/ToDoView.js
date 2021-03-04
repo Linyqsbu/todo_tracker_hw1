@@ -31,11 +31,11 @@ export default class ToDoView {
                 clearTimeout(timer);
             }
             timer=setTimeout(()=>{
+                thisController.model.tps.clearAllTransactions();
+                view.refreshUndoRedo(false,false);
                 thisController.handleLoadList(newList.id);
                 listsElement.firstChild.style.backgroundColor="rgb(255,200,25)";
                 listsElement.firstChild.style.color="black";
-                thisController.model.tps.clearAllTransactions();
-                view.refreshUndoRedo(false,false);
                 let addList=document.getElementById('add-list-button');
                 view.deactivateAddList(addList);
                 thisController.model.isListClosed=false;
@@ -90,6 +90,7 @@ export default class ToDoView {
 
     // LOADS THE list ARGUMENT'S ITEMS INTO THE VIEW
     viewList(list) {
+        
         // WE'LL BE ADDING THE LIST ITEMS TO OUR WORKSPACE
         let itemsListDiv = document.getElementById("todo-list-items-div");
 
@@ -157,11 +158,11 @@ export default class ToDoView {
 
     deactivateAddList(button){
         button.classList.add('deactivated-button');
-        button.classList.remove('todo_button');
+        button.classList.remove('add-button');
     }
 
     activateAddList(button){
-        button.classList.add('todo_button');
+        button.classList.add('add-button');
         button.classList.remove('deactivated-button');
     }
 

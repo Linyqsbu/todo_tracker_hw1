@@ -35,7 +35,6 @@ export default class ToDoModel {
         // WE'LL USE THIS TO ASSIGN ID NUMBERS TO EVERY LIST ITEM
         this.nextListItemId = 0;
 
-        this.isListClosed=true;
 
     }
 
@@ -74,7 +73,7 @@ export default class ToDoModel {
         newItem.setStatus(initStatus);
         list.addItem(newItem);
         if (this.currentList) {
-            this.view.refreshList(list);
+            this.view.refreshLists(list);
         }
     }
 
@@ -184,7 +183,6 @@ export default class ToDoModel {
         this.view.refreshUndoRedo(false,false);
         let addList=document.getElementById('add-list-button');
         this.view.activateAddList(addList);
-        this.isListClosed=true;
     }
 
     listNameEditTransaction(oldName, newName, listId){
@@ -205,6 +203,11 @@ export default class ToDoModel {
             this.toDoLists[listIndex].setName(newName);
         }
         this.view.refreshLists(this.toDoLists);
+        let listsElement=document.getElementById("todo-lists-list");
+        if(this.currentList){
+            listsElement.firstChild.style.backgroundColor="rgb(255,200,25)";
+            listsElement.firstChild.style.color="black";
+        }
     }
 
 
@@ -217,12 +220,28 @@ export default class ToDoModel {
      * @param {*} initName The name of this to add.
      */
     addNewList(initName) {
-        if(this.isListClosed){
+        if(!this.currentList){
             let newList = new ToDoList(this.nextListId++);
-            if (initName)
+            if (initName){
                 newList.setName(initName);
-            this.toDoLists.push(newList);
+                this.toDoLists.push(newList);
+            }
+            else
+                this.toDoLists.unshift(newList);
             this.view.appendNewListToView(newList);
+            if(!initName){
+                this.view.refreshLists(this.toDoLists);
+                let listElement=document.getElementById("todo-list-"+newList.id);
+                
+                listElement.style.backgroundColor="rgb(255,200,25)";
+                listElement.style.color="black";
+                this.view.viewList(newList);
+                this.currentList=newList;
+                let add_button=document.getElementById("add-list-button");
+                this.view.deactivateAddList(add_button);
+            }
+        
+
             return newList;
         }
     }
@@ -293,40 +312,37 @@ export default class ToDoModel {
         //if(this.currentList!=null){
             //let r=confirm("Are you sure you want to delete this list?")
             //if(r){
-        let thisModel=this;
-        let modal=document.createElement("div");
-        document.getElementById('grid-container').appendChild(modal);
-        modal.setAttribute("class","modal");
-        modal.innerHTML="<div class='modal-container'>"+
-                            "<h1>Delete List</h1>"+
-                            "<p>Are you sure you want to delete this list?</p>"+
-                                "<button type='button' id='listCancel' class='cancelbtn'>Cancel</button>"+
-                                "<button type='button' id='listDelete' class='deletebtn'>Delete</button>"+
-                        "</div>";
+        if(this.currentList!=null){
+            let thisModel=this;
+            let modal=document.createElement("div");
+            document.getElementById('grid-container').appendChild(modal);
+            modal.setAttribute("class","modal");
+            modal.innerHTML="<div class='modal-container'>"+
+                                "<h1>Delete List</h1>"+
+                                "<p>Are you sure you want to delete this list?</p>"+
+                                    "<button type='button' id='listCancel' class='cancelbtn'>Cancel</button>"+
+                                    "<button type='button' id='listDelete' class='deletebtn'>Delete</button>"+
+                            "</div>";
 
-        let deleteButton=document.getElementById("listDelete");
-        let cancelButton=document.getElementById("listCancel");
+            let deleteButton=document.getElementById("listDelete");
+            let cancelButton=document.getElementById("listCancel");
 
-        deleteButton.onmousedown =function(){
-            let indexOfList = -1;
-            for (let i = 0; (i < thisModel.toDoLists.length) && (indexOfList < 0); i++) {
-                if (thisModel.toDoLists[i].id === thisModel.currentList.id) {
-                    indexOfList = i;
+            deleteButton.onmousedown =function(){
+                let indexOfList = -1;
+                for (let i = 0; (i < thisModel.toDoLists.length) && (indexOfList < 0); i++) {
+                    if (thisModel.toDoLists[i].id === thisModel.currentList.id) {
+                        indexOfList = i;
+                    }
                 }
+                thisModel.toDoLists.splice(indexOfList, 1);
+                thisModel.closeList();
+                document.getElementById('grid-container').removeChild(modal);
             }
-            thisModel.toDoLists.splice(indexOfList, 1);
-            thisModel.currentList = null;
-            thisModel.view.clearItemsList();
-            thisModel.view.refreshLists(thisModel.toDoLists);
-            document.getElementById('grid-container').removeChild(modal);
-        }
 
-        cancelButton.onmousedown=function(){
-            document.getElementById('grid-container').removeChild(modal);
+            cancelButton.onmousedown=function(){
+                document.getElementById('grid-container').removeChild(modal);
+            }
         }
-
-        
-        
     }
 
     // WE NEED THE VIEW TO UPDATE WHEN DATA CHANGES.
