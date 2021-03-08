@@ -109,6 +109,7 @@ export default class ToDoView {
                                 + " <div class='list-item-control material-icons arrow_down'>keyboard_arrow_down</div>"
                                 + " <div class='list-item-control material-icons delete-item'>close</div>"
                                 + "</div>";
+                                + "</div>";
             itemsListDiv.innerHTML += listItemElement;
             
             let currentItem=document.getElementById('todo-list-item-'+listItem.id);
